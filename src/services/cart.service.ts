@@ -31,5 +31,5 @@ export async function sendCart(cartId:number, userId:number) {
   const cart = await prisma.cart.findUnique({ where: { id: cartId }});
   if (!cart || cart.userId !== userId) throw new Error('Not found or not owner');
   if (cart.sent) throw new Error('Already sent');
-  return prisma.cart.update({ where: { id: cartId }, data: { sent: true, sentAt: new Date() }, include: { items: { include: { product: true } } }});
+  return prisma.cart.update({ where: { id: cartId }, data: { sent: true }, include: { items: { include: { product: true } } }});
 }

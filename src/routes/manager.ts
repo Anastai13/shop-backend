@@ -4,19 +4,26 @@ import { authMiddleware, requireManager, AuthRequest } from '../middlewares/auth
 
 const router = Router();
 
-// Защитим endpoint — только менеджер
-router.get('/carts/sent', authMiddleware, requireManager, async (req:AuthRequest, res, next) => {
+// Менеджер получает только отправленные корзины
+router.get('/carts/sent', authMiddleware, requireManager, async (req: AuthRequest, res, next) => {
   try {
     const carts = await prisma.cart.findMany({
       where: { sent: true },
       include: {
-        user: { select: { id: true, email: true, name: true } },
-        items: { include: { product: true } }
+        user: { select: { id: true, email: true, name: true, role: true } },
+        items: {
+          include: {
+            product: true,
+          },
+        },
       },
-      orderBy: { sentAt: 'desc' }
+      orderBy: { id: 'desc' } //  сортируем по ID
     });
+
     res.json(carts);
-  } catch (e) { next(e) }
+  } catch (e) {
+    next(e);
+  }
 });
 
 export default router;
