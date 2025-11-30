@@ -4,7 +4,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "role" TEXT NOT NULL DEFAULT 'user'
 );
 
 -- CreateTable
@@ -12,8 +12,7 @@ CREATE TABLE "Product" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "title" TEXT NOT NULL,
     "description" TEXT,
-    "priceCents" INTEGER NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "priceCents" INTEGER NOT NULL
 );
 
 -- CreateTable
@@ -21,8 +20,6 @@ CREATE TABLE "Cart" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "userId" INTEGER NOT NULL,
     "sent" BOOLEAN NOT NULL DEFAULT false,
-    "sentAt" DATETIME,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Cart_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
